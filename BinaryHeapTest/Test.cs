@@ -5,11 +5,11 @@ namespace BinaryHeapTest
 {
     class Test
     {
-       static int TestSize = 1024;
+       static int TestSize = 10000000;
 
        static void Main(string[] args)
         {
-            BinaryHeap<int> HeapTree = new BinaryHeap<int>();
+            BinaryHeap<int> HeapTree = new BinaryMinHeap<int>();
 
             int[] arr = new int[TestSize];
             Random rng = new Random(DateTime.Now.Millisecond);
@@ -31,7 +31,7 @@ namespace BinaryHeapTest
                     
                     int currentVaue = HeapTree.Extract();
                     Console.Write(currentVaue + "\n");
-                    if (prevValue > currentVaue)
+                    if (prevValue!=0 && prevValue > currentVaue)
                     {
                         throw new System.ApplicationException("The order in the source tree was wrong!");
                     }

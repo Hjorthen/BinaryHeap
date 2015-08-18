@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Binary_Heap
 {
-    public class BinaryHeap<T> where T : IComparable<T>
+    abstract public class BinaryHeap<T> where T : IComparable<T>
     {
-        List<T> Collection;
+        protected List<T> Collection;
 
         public int GetNodeCount()
         {
@@ -140,13 +140,12 @@ namespace Binary_Heap
 
         }
 
+      
         /// <summary>
         /// returns true if the first element is smaller than the compared to, then the two nodes should be swapped 
         /// </summary>
-        bool CompareNodes(int index1, int index2)
-        {
-            return Collection[index1].CompareTo(Collection[index2]) < 0;
-        }
+        protected abstract bool CompareNodes(int index1, int index2);
+       
 
         void Swap(int index1, int index2)
         {
