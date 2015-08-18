@@ -1,36 +1,52 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Binary_Heap;
 
 namespace BinaryHeapTest
 {
     class Test
     {
+       static int TestSize = 1024;
+
        static void Main(string[] args)
         {
             BinaryHeap<int> HeapTree = new BinaryHeap<int>();
-            int[] arr = { 2, 5, 10, 22, 50, 52, 42 };
 
-            HeapTree.InsertRange(arr);
-
-            Console.Write("Hello, World!" + HeapTree.ToString());
+            int[] arr = new int[TestSize];
+            Random rng = new Random(DateTime.Now.Millisecond);
+            Console.WriteLine("Generating random values..");
             for (int i = 0; i < arr.Length; i++)
             {
-                Console.Write("\n" + HeapTree.Extract());
-
+                arr[i] = rng.Next();
             }
 
-            arr = new int[] { 255, 90, 30, 22, 512,2,1,0};
+            Console.WriteLine("Adding to tree..");
             HeapTree.InsertRange(arr);
-            Console.Write("\nPass two:");
-            for (int i = 0; i < arr.Length; i++)
-            {
-                Console.Write("\n" + HeapTree.Extract());
 
+            Console.WriteLine("Running tests...");
+            try
+            {
+                int prevValue = 0;
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    
+                    int currentVaue = HeapTree.Extract();
+                    Console.Write(currentVaue + "\n");
+                    if (prevValue > currentVaue)
+                    {
+                        throw new System.ApplicationException("The order in the source tree was wrong!");
+                    }
+                    prevValue = currentVaue;
+                }
+                Console.WriteLine("Test successfull!");
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("\n " + e.Message + "\n\n" + e.StackTrace);
+                
+            }
+            
+
+
             Console.ReadLine();
         }
     }

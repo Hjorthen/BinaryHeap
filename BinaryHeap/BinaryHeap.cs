@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Binary_Heap
 {
     public class BinaryHeap<T> where T : IComparable<T>
     {
         List<T> Collection;
+
+        public int GetNodeCount()
+        {
+            return Collection.Count;
+        }
 
         public BinaryHeap()
         {
@@ -61,6 +64,11 @@ namespace Binary_Heap
          /// <returns>The value of the base element</returns>
         public T Extract()
         {
+            if (Collection.Count == 0)
+            {
+                throw new System.InvalidOperationException("The tree is empty!");
+            }
+
             //Gets the base node
             T baseNode = GetBaseNode();
 
