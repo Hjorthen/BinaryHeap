@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Runtime.CompilerServices;
 
 namespace Binary_Heap
 {
@@ -8,11 +8,14 @@ namespace Binary_Heap
     {
         protected List<T> Collection;
 
-        public int GetNodeCount()
+        public int Size
         {
-            return Collection.Count;
+            get
+            {
+                return Collection.Count;
+            }
         }
-
+       
         public BinaryHeap()
         {
             Collection = new List<T>();
@@ -22,16 +25,11 @@ namespace Binary_Heap
         /// Returns the index of the bottom of the heap
         /// </summary>
         /// <returns>The index of the bottom heap node</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         int GetLastNodeIndex()
         {
             return Collection.Count - 1;
         }
-
-        T GetBaseNode()
-        {
-            return Collection[0];
-        }
-
       
         /// <summary>
         /// Inserts a range of elements by calling Insert on each of them
@@ -69,19 +67,15 @@ namespace Binary_Heap
                 throw new System.InvalidOperationException("The tree is empty!");
             }
 
-            //Gets the base node
-            T baseNode = GetBaseNode();
-
-            //Swaps the base node with the last node
-            Swap(0, GetLastNodeIndex());
-
+            //Gets the root node
+            T baseNode = Collection[0];
+            Collection[0] = Collection[GetLastNodeIndex()];
             //Removes the base node
             Collection.RemoveAt(GetLastNodeIndex());
             BubbleSortDown(0);
             return baseNode;
         }
-
-
+        
         public override string ToString()
         {
             return String.Format("Tree size: {0}, Height: {1}", Collection.Count, GetDepth());
@@ -96,24 +90,17 @@ namespace Binary_Heap
             return Math.Floor(Math.Log((double)Collection.Count, 2.0));
         }
 
-        void BubbleSortUp(int childNodeIndex)
+        void BubbleSortUp(int startNodeIndex)
         {
-            int parentNodeIndex = GetParentIndex(childNodeIndex);
+            int current = startNodeIndex;
+            int parent = GetParentIndex(current);
 
-            //If parent is less than zero, then the current node is the root. 
-            if(parentNodeIndex >= 0)
+            while (current > 0 && CompareNodes(current, parent))
             {
-                if(CompareNodes(childNodeIndex, parentNodeIndex))
-                {
-                    Swap(childNodeIndex, parentNodeIndex);
-
-                    //Move onto the next node
-                    BubbleSortUp(parentNodeIndex);
-                    return; 
-                }
-                return;
+                Swap(current, parent);
+                current = parent;
+                parent = GetParentIndex(current);
             }
-            return;
         }
 
         void BubbleSortDown(int NodeIndex)
@@ -142,11 +129,11 @@ namespace Binary_Heap
 
       
         /// <summary>
-        /// returns true if the first element is smaller than the compared to, then the two nodes should be swapped 
+        /// returns true if the first element is smaller than the one compared to
         /// </summary>
         protected abstract bool CompareNodes(int index1, int index2);
-       
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void Swap(int index1, int index2)
         {
             T tmp = Collection[index1];
@@ -159,7 +146,8 @@ namespace Binary_Heap
         /// </summary>
         /// <param name="childIndex">The child node's index to find the parent of</param>
         /// <returns>The index of the parent node</returns>
-        int GetParentIndex(int childIndex)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static int GetParentIndex(int childIndex)
         {
             return ((childIndex - 1) / 2);
         }
@@ -169,7 +157,8 @@ namespace Binary_Heap
         /// </summary>
         /// <param name="parentIndex">The index of the node to find the child of</param>
         /// <returns>the index location of the left child</returns>
-        int GetLeftChildIndex(int parentIndex)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static int GetLeftChildIndex(int parentIndex)
         {
             return (2 * parentIndex + 1);
         }
@@ -179,6 +168,7 @@ namespace Binary_Heap
         /// </summary>
         /// <param name="parentIndex">The index of the node to find the child of</param>
         /// <returns>the index location of the right child</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         int GetRightChildIndex(int parentIndex)
         {
             return (2 * parentIndex + 2);

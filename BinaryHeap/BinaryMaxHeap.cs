@@ -10,10 +10,7 @@ namespace Binary_Heap
     {
         protected override bool CompareNodes(int index1, int index2)
         {
-                return Collection[index1].CompareTo(Collection[index2]) > 0; 
+            return Collection[index1].CompareTo(Collection[index2]) > 0; 
         }
-
-
-
     }
 }
